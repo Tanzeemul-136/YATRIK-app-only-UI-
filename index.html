@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YATRIK - Unified Travel Logistics Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div class="intro-logo">YATRIK</div>
+        <div class="typewriter-text" id="typewriter"></div>
+    </div>
+
+    <div id="app-content" class="hidden">
+        
+        <header class="app-white-header">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+                <h1 class="logo-text" onclick="showHomeView()">yatrik</h1>
+            </div>
+            
+            <div class="auth-zone">
+                <button id="header-login-btn" class="oval-login-btn" onclick="openLoginModal()">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Log in / Sign up</span>
+                </button>
+                <div id="profile-trigger" class="profile-avatar hidden" onclick="toggleProfileDropdown()">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="Avatar">
+                    <div id="profile-dropdown" class="profile-card hidden">
+                        <h4>Tanzee</h4>
+                        <p>User ID: YT-2026</p>
+                        <hr>
+                        <a href="#"><i class="fa fa-user-gear"></i> Manage Profile</a>
+                        <a href="#" onclick="location.reload()"><i class="fa fa-right-from-bracket"></i> Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="sidebar" class="sidebar">
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+            <a href="#" onclick="showHomeView(); toggleSidebar()"><i class="fa fa-home"></i> Home Console</a>
+            <a href="#" onclick="showAboutPage()"><i class="fa fa-info-circle"></i> About Build</a>
+            <a href="#" onclick="showFormPage('feedback')"><i class="fa fa-comment-dots"></i> Feedback Loop</a>
+            <a href="#" onclick="showFormPage('report')"><i class="fa fa-flag"></i> System Report</a>
+        </div>
+
+        <div id="transition-overlay" class="hidden">
+            <div id="smoke-generator" class="smoke-cloud-layer"></div>
+            <div id="travel-asset-wrapper">
+                <div id="travel-asset"></div>
+            </div>
+        </div>
+
+        <main id="viewport-core">
+            
+            <div id="destination-selector" class="center-box">
+                <h2>Select Travel Architecture Destination</h2>
+                <div class="map-placeholder" onclick="loadContinentDial()">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80" alt="Travel Network Map" class="interactive-map-img">
+                    <div class="map-text-overlay">
+                        <p><i class="fa fa-map-marked-alt"></i> Initialize Interactive Country Routing Grid</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dial-section" class="hidden">
+                <div class="country-grid-header">
+                    <h3>Explore Nodes <span id="node-count">(24 Available Countries)</span></h3>
+                    <button class="back-home-btn" onclick="showHomeView()"><i class="fa fa-arrow-left"></i> Back to Map</button>
+                </div>
+                <div class="country-matrix-grid" id="rotary-carousel"></div>
+            </div>
+
+            <div id="booking-dashboard" class="hidden">
+                
+                <div class="horizontal-modality-nav">
+                    <button id="nav-flight" onclick="triggerTransition('flight')"><i class="fa fa-plane"></i> Skyscanner Flights</button>
+                    <button id="nav-train" onclick="triggerTransition('train')"><i class="fa fa-train"></i> ConfirmTkt Rail</button>
+                    <button id="nav-bus" onclick="triggerTransition('bus')"><i class="fa fa-bus"></i> redBus Network</button>
+                    <button id="nav-cab" onclick="triggerTransition('cab')"><i class="fa fa-taxi"></i> Uber Mobility</button>
+                    <button id="nav-hotel" onclick="triggerTransition('hotel')"><i class="fa fa-hotel"></i> Booking Stays</button>
+                    <button id="nav-restaurant" onclick="triggerTransition('restaurant')"><i class="fa fa-utensils"></i> EazyDiner Tables</button>
+                </div>
+
+                <div class="horizontal-search-console">
+                    <div class="search-input-field" onclick="togglePopupDropdown('source-popup-box')">
+                        <span class="field-label"><i class="fa fa-location-dot"></i> From Node</span>
+                        <input type="text" id="route-source" readonly value="Lucknow (LKO)">
+                        <div id="source-popup-box" class="location-popup hidden">
+                            <div onclick="selectLoc('source', 'Lucknow (LKO)')">Lucknow (LKO)</div>
+                            <div onclick="selectLoc('source', 'Delhi (NDLS)')">Delhi (NDLS)</div>
+                            <div onclick="selectLoc('source', 'Jaipur (JP)')">Jaipur (JP)</div>
+                            <div onclick="selectLoc('source', 'Mumbai (BCT)')">Mumbai (BCT)</div>
+                        </div>
+                    </div>
+
+                    <div class="search-input-field">
+                        <span class="field-label"><i class="fa fa-arrow-right-to-bracket"></i> Target Node</span>
+                        <input type="text" id="route-destination" readonly value="India">
+                    </div>
+
+                    <div class="search-input-field">
+                        <span class="field-label"><i class="fa fa-calendar-days"></i> Travel Date</span>
+                        <input type="date" id="date-from" value="2026-06-16">
+                    </div>
+
+                    <div class="search-action-wrapper" id="dynamic-contextual-controls"></div>
+
+                    <button class="primary-orange-search-btn" onclick="executeSearchQuery()">
+                        <span>Search</span> <i class="fa fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <div class="workspace-split-view">
+                    <section class="results-container">
+                        <div class="view-header-banner" id="category-banner-title">Available Inventory Listings</div>
+                        <div class="results-grid-wrapper" id="results-grid"></div>
+                    </section>
+
+                    <aside class="interactive-component-panel hidden" id="interactive-panel">
+                        <div class="panel-header">
+                            <h3 id="panel-title">Asset Configuration</h3>
+                            <button class="panel-close-btn" onclick="closeInteractivePanel()">&times;</button>
+                        </div>
+                        <div id="panel-dynamic-content"></div>
+                    </aside>
+                </div>
+            </div>
+
+            <div id="static-page-viewport" class="hidden"></div>
+        </main>
+
+        <div id="auth-modal" class="auth-overlay-backdrop hidden">
+            <div class="split-auth-container">
+                <button class="auth-close-corner-btn" onclick="closeLoginModal()">&times;</button>
+                
+                <div class="auth-graphic-side">
+                    <div class="auth-graphic-content">
+                        <h3>Unlock Global Logistics Parameters</h3>
+                        <ul class="auth-feature-perks-list">
+                            <li><i class="fa-solid fa-circle-check"></i> <b>Instant Price Drop Alerts</b> matched via Skyscanner node channels.</li>
+                            <li><i class="fa-solid fa-circle-check"></i> <b>Terms Guarantee Policy</b> protected during route cancellations.</li>
+                            <li><i class="fa-solid fa-circle-check"></i> <b>Exclusive Genius Rewards</b> scaling up to 25% across global Booking stays.</li>
+                        </ul>
+                    </div>
+                    <div class="auth-graphic-footer">
+                        <p>Trusted by 2+ Million Travel Architects WorldWide.</p>
+                    </div>
+                </div>
+
+                <div class="auth-form-side">
+                    <div id="login-container" class="auth-form-stage">
+                        <div class="auth-stage-header">
+                            <h2>Welcome back</h2>
+                            <p>Sign in to manage your premium travel profiles</p>
+                        </div>
+
+                        <div class="social-sso-row">
+                            <button class="sso-btn" onclick="mockGoogleSSO()"><img src="https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=30&q=80" alt="Google"> Google</button>
+                            <button class="sso-btn" onclick="alert('Apple security link handshake initialized.')"><i class="fa-brands fa-apple"></i> Apple</button>
+                        </div>
+
+                        <div class="auth-separator"><span>or use account login</span></div>
+
+                        <form id="login-form" onsubmit="handleFormSubmission(event)">
+                            <div class="premium-field-wrap">
+                                <label><i class="fa-regular fa-envelope"></i> Email or Username</label>
+                                <input type="text" required placeholder="e.g., tanzee@srmcem.edu">
+                            </div>
+                            <div class="premium-field-wrap">
+                                <div class="field-header-row">
+                                    <label><i class="fa-solid fa-lock"></i> Password String</label>
+                                    <a href="#" class="auth-inline-link" onclick="alert('Security token reset link sent.')">Forgot?</a>
+                                </div>
+                                <input type="password" required placeholder="Enter login password string">
+                            </div>
+                            <button type="submit" class="premium-auth-submit-btn">Continue <i class="fa-solid fa-arrow-right"></i></button>
+                        </form>
+                        
+                        <div class="auth-stage-footer">
+                            <p>New Travel Architect? <a href="#" onclick="switchAuthMode('signup')">Create an account</a></p>
+                        </div>
+                    </div>
+
+                    <div id="signup-container" class="auth-form-stage hidden">
+                        <div class="auth-stage-header">
+                            <h2>Join the Network</h2>
+                            <p>Build your unified logistics passport identifier profile</p>
+                        </div>
+
+                        <form id="signup-form" onsubmit="handleFormSubmission(event)">
+                            <div class="premium-field-wrap">
+                                <label>Full Name</label>
+                                <input type="text" required placeholder="e.g., Tanzeemul Haq">
+                            </div>
+                            <div class="premium-field-wrap">
+                                <label>Email Address Vector</label>
+                                <input type="email" required placeholder="name@domain.com">
+                            </div>
+                            <div class="premium-field-wrap">
+                                <label>Secure Access Password</label>
+                                <input type="password" required placeholder="Minimum 8 characters" oninput="verifyPasswordStrength(this.value)">
+                                <div class="password-strength-indicator-bar"><div id="strength-meter"></div></div>
+                                <span id="strength-text" class="validation-helper-message">Security status: Awaiting string input</span>
+                            </div>
+                            <div class="checkbox-policy-agreement">
+                                <input type="checkbox" id="policy-check" required>
+                                <label for="policy-check">I accept the cross-border data processing architecture terms.</label>
+                            </div>
+                            <button type="submit" class="premium-auth-submit-btn">Register Profile</button>
+                        </form>
+
+                        <div class="auth-stage-footer">
+                            <p>Already registered? <a href="#" onclick="switchAuthMode('login')">Sign in here</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="dull-footer">
+            <div class="footer-links">
+                <a href="#" onclick="showAboutPage()">About Matrix</a> | 
+                <a href="#" onclick="showFormPage('feedback')">Submit Feedback</a> | 
+                <a href="#" onclick="showFormPage('report')">System Report</a>
+            </div>
+            <p>&copy; 2026 YATRIK Logistics Network Group Core. Enterprise SPA Tier Architecture.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
