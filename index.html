@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YATRIK - Travel Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div class="intro-logo">YATRIK</div>
+        <div class="typewriter-text" id="typewriter"></div>
+    </div>
+
+    <div id="app-content" class="hidden">
+        
+        <header class="material-dark-header">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+                <h1 class="logo-text">YATRIK</h1>
+            </div>
+            
+            <nav class="header-right hidden" id="booking-nav">
+                <button onclick="triggerTransition('flight')"><i class="fa fa-plane"></i> Flight</button>
+                <button onclick="triggerTransition('train')"><i class="fa fa-train"></i> Train</button>
+                <button onclick="triggerTransition('bus')"><i class="fa fa-bus"></i> Bus</button>
+                <button onclick="triggerTransition('cab')"><i class="fa fa-taxi"></i> Cab</button>
+                <button onclick="triggerTransition('hotel')"><i class="fa fa-hotel"></i> Hotel</button>
+                <button onclick="triggerTransition('restaurant')"><i class="fa fa-utensils"></i> Restaurant</button>
+            </nav>
+
+            <div class="auth-zone">
+                <button id="header-login-btn" class="oval-login-btn" onclick="openLoginModal()">Login</button>
+                <div id="profile-trigger" class="profile-avatar hidden" onclick="toggleProfileDropdown()">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="Avatar">
+                    <div id="profile-dropdown" class="profile-card hidden">
+                        <h4>Tanzee</h4>
+                        <p>User ID: YT-2026</p>
+                        <hr>
+                        <a href="#"><i class="fa fa-user-gear"></i> Manage Profile</a>
+                        <a href="#" onclick="location.reload()"><i class="fa fa-right-from-bracket"></i> Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="sidebar" class="sidebar">
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+            <a href="#" onclick="showHomeView()"><i class="fa fa-home"></i> Home</a>
+            <a href="#" onclick="showAboutPage()"><i class="fa fa-info-circle"></i> About Us</a>
+            <a href="#" onclick="showFormPage('feedback')"><i class="fa fa-comment-dots"></i> Feedback</a>
+            <a href="#" onclick="showFormPage('report')"><i class="fa fa-flag"></i> Report</a>
+            <a href="#" onclick="showContactPage()"><i class="fa fa-envelope"></i> Contact Us</a>
+        </div>
+
+        <div id="transition-overlay" class="hidden">
+            <div id="smoke-generator" class="smoke-cloud-layer"></div>
+            <div id="travel-asset-wrapper">
+                <div id="travel-asset"></div>
+            </div>
+        </div>
+
+        <main id="viewport-core">
+            
+            <div id="destination-selector" class="center-box">
+                <h2>Select Your Destination</h2>
+                <div class="map-placeholder" onclick="loadContinentDial()">
+                    <p><i class="fa fa-map-marked-alt"></i> Click to Open World Map</p>
+                </div>
+            </div>
+
+            <div id="dial-section" class="hidden">
+                <h3 id="continent-title">Select Traveling Country</h3>
+                <div class="rotary-carousel" id="rotary-carousel"></div>
+            </div>
+
+            <div id="booking-dashboard" class="hidden">
+                <aside class="filter-sidebar">
+                    <div class="filter-section">
+                        <h4>Logistics Parameters</h4>
+                        
+                        <label class="section-tag">Origin Terminal</label>
+                        <div class="custom-select-box" onclick="showLocationOptions()">
+                            <input type="text" id="route-display" readonly value="Click to Select Location">
+                            <div id="location-popup-box" class="location-popup hidden">
+                                <div onclick="selectLoc('Lucknow (LKO)')">Lucknow (LKO)</div>
+                                <div onclick="selectLoc('Delhi (NDLS)')">Delhi (NDLS)</div>
+                                <div onclick="selectLoc('Jaipur (JP)')">Jaipur (JP)</div>
+                                <div onclick="selectLoc('Mumbai (BCT)')">Mumbai (BCT)</div>
+                            </div>
+                        </div>
+
+                        <label class="section-tag">From Date</label>
+                        <input type="date" id="date-from" value="2026-06-10">
+                        
+                        <label class="section-tag">Till Date (To)</label>
+                        <input type="date" id="date-to" value="2026-06-17">
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Budget Filters</h4>
+                        <div class="budget-options">
+                            <input type="radio" id="b-all" name="budget-filter" checked>
+                            <label for="b-all">All</label>
+                            
+                            <input type="radio" id="b-low" name="budget-filter">
+                            <label for="b-low">Low</label>
+                            
+                            <input type="radio" id="b-mid" name="budget-filter">
+                            <label for="b-mid">Mid Range</label>
+                            
+                            <input type="radio" id="b-exp" name="budget-filter">
+                            <label for="b-exp">Expensive</label>
+                            
+                            <input type="radio" id="b-lux" name="budget-filter">
+                            <label for="b-lux">Luxury</label>
+                        </div>
+                    </div>
+                </aside>
+
+                <section class="results-container" id="results-grid"></section>
+            </div>
+
+            <div id="static-page-viewport" class="hidden"></div>
+        </main>
+
+        <div id="auth-modal" class="auth-overlay hidden">
+            
+            <div class="neon-auth-box" id="login-container">
+                <h2>YATRIK LOGIN</h2>
+                <div class="input-wrap">
+                    <input type="text" required placeholder=" ">
+                    <label><i class="fa fa-user"></i> Username</label>
+                </div>
+                <div class="input-wrap">
+                    <input type="password" required placeholder=" ">
+                    <label><i class="fa fa-lock"></i> Password</label>
+                </div>
+                <button class="auth-submit-btn" onclick="mockLoginSuccess()">Log In</button>
+                <div class="auth-footer-links">
+                    <a href="#">Forgot Password?</a>
+                    <a href="#" onclick="switchAuthMode('signup')" class="neon-link">New User? Sign Up</a>
+                </div>
+            </div>
+
+            <div class="neon-auth-box hidden" id="signup-container">
+                <h2>CREATE ACCOUNT</h2>
+                <div class="input-wrap"><input type="text" required placeholder=" "><label>Full Name</label></div>
+                <div class="input-wrap"><input type="date" required placeholder=" "><label class="static-label">DOB</label></div>
+                <div class="input-wrap"><input type="password" required placeholder=" "><label>Password</label></div>
+                <div class="input-wrap"><input type="password" required placeholder=" "><label>Confirm Password</label></div>
+                <button class="auth-submit-btn" onclick="mockLoginSuccess()">Register Engine</button>
+                <div class="auth-footer-links">
+                    <a href="#" onclick="switchAuthMode('login')" class="neon-link">Back to Login</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="dull-footer">
+            <div class="footer-links">
+                <a href="#" onclick="showAboutPage()">About Us</a> | 
+                <a href="#" onclick="showFormPage('feedback')">Feedback</a> | 
+                <a href="#" onclick="showFormPage('report')">Report</a> | 
+                <a href="#" onclick="showContactPage()">Contact Us</a>
+            </div>
+            <p>&copy; 2026 YATRIK Logistics Network. Enterprise Build.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
